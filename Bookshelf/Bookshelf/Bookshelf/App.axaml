@@ -1,0 +1,33 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:views="clr-namespace:Bookshelf.Views"
+			 xmlns:viewModels="clr-namespace:Bookshelf.ViewModels"
+             x:Class="Bookshelf.App"
+             RequestedThemeVariant="Dark">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+	<Application.DataTemplates>
+		<DataTemplate DataType="{x:Type viewModels:MainViewModel}">
+			<views:MainView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+			<views:LoginView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModels:BookViewModel}">
+			<views:BookView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModels:ReadingBookViewModel}">
+			<views:ReadingBookView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModels:MyBooksViewModel}">
+			<views:MyBooksView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModels:MobileMainViewModel}">
+			<views:MobileMainView/>
+		</DataTemplate>
+	</Application.DataTemplates>
+	
+    <Application.Styles>
+        <FluentTheme/>
+		<StyleInclude Source="avares://Bookshelf/Styles/Controls.axaml"/>
+    </Application.Styles>
+</Application>

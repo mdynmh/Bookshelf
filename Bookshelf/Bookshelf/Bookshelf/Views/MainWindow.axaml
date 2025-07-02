@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Bookshelf.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Bookshelf.Views.MainWindow"
+        Icon="/Assets/BookshelfLogo.ico"
+        Title="Bookshelf">
+	    <Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			
+			<Button Command="{Binding GoBackCommand}"
+				Content="⟵"
+				IsVisible="{Binding Navigation.CanGoBack}"
+				Background="Black"/>
+
+			<Button Command="{Binding NavigateToMyBooksCommand}" 
+					Background="Black"
+					Height="40" 
+					Padding="1"
+					Margin="5"
+					HorizontalAlignment="Right"
+					IsVisible="{Binding Navigation.CanGoBack}">
+				<StackPanel Orientation="Horizontal">
+					<Image Source="/Assets/books.jpg" Stretch="Uniform"/>
+					<TextBlock Text="Мои книги" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Button>
+
+			<ContentControl Content="{Binding Navigation.CurrentViewModel}" Grid.Row="1"/>
+	    </Grid>
+</Window>

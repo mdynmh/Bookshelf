@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:Bookshelf.ViewModels"
+			 xmlns:conv="clr-namespace:Bookshelf.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bookshelf.Views.BookView">
+
+	<UserControl.Resources>
+		<conv:ReadingTimeConverter x:Key="ReadingTimeConverter"/>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+
+		<Image Source="{Binding Book.Image}"
+			   Width="300" Height="450"
+			   Stretch="UniformToFill"
+			   Grid.Column="1"/>
+
+		<ScrollViewer HorizontalScrollBarVisibility="Auto"
+		  VerticalScrollBarVisibility="Disabled"
+		  Padding="0,0,0,20">
+			<StackPanel Margin="10" Spacing="8" HorizontalAlignment="Center"
+						VerticalAlignment="Center">
+				<TextBlock Text="{Binding Book.Title}"
+						   FontSize="34"
+						   FontWeight="Bold"/>
+
+				<TextBlock Text="{Binding Book.AuthorNames}"
+						   FontSize="24"/>
+
+				<ItemsControl
+					ItemsSource="{Binding Book.Genres}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" Spacing="4"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border Padding="6,2"
+									Background="#EEE"
+									CornerRadius="4">
+								<TextBlock Text="{Binding GenreName}"
+											FontSize="16"
+											Foreground="#333"/>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+				<TextBlock Text="{Binding Book.PageCount, StringFormat={}{0} стр.}"
+						   FontSize="20"/>
+				
+				<TextBlock Text="{Binding Book.ReadingTime, 
+						   Converter={StaticResource ReadingTimeConverter}}"
+						   FontSize="20"/>
+
+				<TextBlock Text="{Binding AvailabilityText}"
+						   FontSize="20"/>
+
+				<TextBlock Text="{Binding DueDateText}"
+						   FontSize="16" Foreground="Red"/>
+
+				<Button Content="Читать" Width="200" 
+						Background="#FF536DFE"
+						IsVisible="{Binding IsNotAvailableReading}"
+						Command="{Binding NavigateToReadingCommand}"/>
+			</StackPanel>
+		</ScrollViewer>
+
+		<ScrollViewer Grid.Row="1" Grid.ColumnSpan="2"
+              Margin="20"
+              VerticalScrollBarVisibility="Auto">
+			<StackPanel Margin="20" Spacing="8" 
+						Grid.ColumnSpan="2"
+						Grid.Row="1">
+				<TextBlock Text="Описание:" FontSize="20" FontWeight="Bold" Padding="10"/>
+				<TextBlock Text="{Binding Book.Description}"
+						   FontSize="20" TextWrapping="Wrap"/>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

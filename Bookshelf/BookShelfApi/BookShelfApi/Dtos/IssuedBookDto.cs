@@ -1,0 +1,15 @@
+﻿namespace BookShelfApi.Dtos
+{
+    public class IssuedBookDto
+    {
+        public int IssueId { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
+        public DateTime IssuedAt { get; set; }
+        public DateTime DueDate { get; set; }
+        public DateTime? ReturnedAt { get; set; }
+
+        public BookDto Book { get; set; } = null!;
+    }
+
+}

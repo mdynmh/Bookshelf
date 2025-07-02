@@ -1,0 +1,150 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="clr-namespace=Avalonia.Controls;assembly=Avalonia.Controls"
+			 xmlns:ac="clr-namespace=Avalonia.Controls;assembly=Avalonia.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bookshelf.Views.ReadingBookView">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200" />
+			<ColumnDefinition/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="200"/>
+		</Grid.ColumnDefinitions>
+
+		<ScrollViewer
+			Grid.RowSpan="2">
+			<ItemsControl ItemsSource="{Binding Sections}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Button Content="{Binding Title}"
+								Command="{Binding DataContext.GoToSectionCommand,
+                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
+								CommandParameter="{Binding}"
+								Background="Transparent"
+								HorizontalAlignment="Stretch"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+
+		<Border
+            Width="1"
+            Background="Gray"
+			HorizontalAlignment="Right"
+            Margin="0,8"
+			Grid.RowSpan="2"/>
+		
+		<Button Content="◄"
+				Command="{Binding GoToPreviousPageCommand}"
+				IsVisible="{Binding CanGoToPreviousPage}"
+                Width="48"
+				Height="400"
+                FontSize="24"
+                Background="Black"
+                Foreground="White"
+				HorizontalAlignment="Right"
+				Grid.Column="1"
+				Grid.RowSpan="2"/>
+		
+		<Image Source="{Binding Page}"
+				Stretch="Uniform"
+				VerticalAlignment="Center"
+				Grid.Column="2"
+				Grid.RowSpan="2"/>
+
+		<Button Content="►"
+				Command="{Binding GoToNextPageCommand}"
+				IsVisible="{Binding CanGoToNextPage}"
+                Width="48"
+				Height="400"
+                FontSize="24"
+                Background="Black"
+                Foreground="White"
+				HorizontalAlignment="Left"
+				Grid.Column="3"
+				Grid.RowSpan="2"/>
+
+		<Border
+            Width="1"
+            Background="White"
+			HorizontalAlignment="Left"
+			Grid.Column="4"
+			Grid.RowSpan="2"/>
+
+		<StackPanel Grid.Column="4">
+			<TextBlock Text="Закладки" 
+					   FontSize="20" 
+					   FontWeight="Bold"
+					   HorizontalAlignment="Center"/>
+			<ScrollViewer>
+				<ItemsControl ItemsSource="{Binding Bookmarks}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								
+								<Button Content="{Binding Note}"
+										Command="{Binding DataContext.GoToBookmarkCommand,
+										RelativeSource={RelativeSource AncestorType=UserControl}}"
+										CommandParameter="{Binding}"
+										Background="Transparent"
+										HorizontalAlignment="Stretch"/>
+								<Button Command="{Binding DataContext.DeleteBookmarkCommand,
+										RelativeSource={RelativeSource AncestorType=UserControl}}"
+										CommandParameter="{Binding}"
+										Background="Transparent"
+										HorizontalAlignment="Stretch"
+										Grid.Column="1"
+										Padding="0">
+									<Image Source="/Assets/recyclebin.jpg" Stretch="UniformToFill"/>
+								</Button>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</StackPanel>
+
+		<StackPanel Grid.Column="4" Grid.Row="1" Margin="1">
+			<TextBox Text="{Binding NewBookmarkNote}"
+					HorizontalAlignment="Stretch"
+					 Watermark="Название..."/>
+			<Button Content="Добавить" 
+					Command="{Binding SaveBookmarkCommand}"
+					HorizontalAlignment="Stretch"
+					Background="#FF536DFE"/>
+		</StackPanel>
+		
+		<TextBlock Text="{Binding CurrentPageText}"
+				   HorizontalAlignment="Center"
+				   FontSize="18"
+				   Grid.Column="2"
+				   Grid.Row="2"/>
+	</Grid>
+</UserControl>

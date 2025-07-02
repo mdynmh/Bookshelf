@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:Bookshelf.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bookshelf.Views.LoginView">
+	
+	<Grid>
+		<StackPanel Spacing="12" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<TextBlock Text="Вход" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center"/>
+			<TextBox Watermark="Логин" Text="{Binding UserLogin}"/>
+			<TextBox Watermark="Пароль" PasswordChar="•" Text="{Binding UserPassword}"/>
+			<Button Content="Войти" 
+				Command ="{Binding LoginCommand}"
+				HorizontalAlignment="Stretch"
+				Background="#FF536DFE"/>
+			<TextBlock Text="{Binding TextError}"
+				Foreground="Red"
+			    HorizontalAlignment="Center"
+				IsVisible="{Binding IsErrorVisible}"/>
+		</StackPanel>
+	</Grid>
+	
+</UserControl>

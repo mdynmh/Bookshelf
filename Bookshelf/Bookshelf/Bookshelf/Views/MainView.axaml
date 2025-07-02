@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Bookshelf.ViewModels"
+			 xmlns:conv="clr-namespace:Bookshelf.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bookshelf.Views.MainView"
+             x:DataType="vm:MainViewModel">
+		<UserControl.Resources>
+			<conv:TruncateConverter x:Key="TruncateConverter" MaxLength="100"/>
+			<conv:ReadingTimeConverter x:Key="ReadingTimeConverter"/>
+		</UserControl.Resources>
+	  <Design.DataContext>
+		<vm:MainViewModel />
+	  </Design.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
+		<StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center"
+				Spacing="5"
+				IsVisible="{Binding IsVisibleSearch}">
+			<TextBox x:Name="SearchBox"
+					Text="{Binding SearchText}"
+					Width="260"
+					Watermark="Ищем..."/>
+
+			<Button Content="Поиск"
+					Command="{Binding SearchCommand}"
+					Width="100"
+					Background="#FF536DFE"/>
+		</StackPanel>
+
+		<ListBox
+			Grid.Row="1"
+			ItemsSource="{Binding Books}"
+			Background="Transparent"
+			ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Button Background="Transparent"
+						Command="{Binding DataContext.NavigateToBookCommand,
+                                  RelativeSource={RelativeSource AncestorType=ListBox}}"
+						Height="300"
+						HorizontalAlignment="Stretch"
+						CommandParameter="{Binding}">
+
+						<Grid Width="800">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="75"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+								<Border Width="180" Height="300"
+									CornerRadius="5"
+									ClipToBounds="True">
+									<Image Source="{Binding Image}"
+										   Stretch="UniformToFill"
+										   Width="200" Height="310"/>
+								</Border>
+
+								<StackPanel Spacing="6" Grid.Column="2">
+
+									<TextBlock Text="{Binding Title}"
+											   FontSize="24"
+											   FontWeight="Bold"/>
+
+									<TextBlock Text="{Binding AuthorNames}"
+											   FontSize="15"
+											   Foreground="Gray"/>
+
+									<StackPanel Orientation="Horizontal" Spacing="10">
+										<TextBlock Text="{Binding PageCount, StringFormat={}{0} стр.}" FontSize="20"/>
+										<TextBlock Text="{Binding ReadingTime, 
+										   Converter={StaticResource ReadingTimeConverter}}"
+										   FontSize="20"/>
+									</StackPanel>
+
+									<ItemsControl ItemsSource="{Binding Genres}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel Orientation="Horizontal" Spacing="4"/>
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<Border Padding="6,2"
+														Background="#EEE"
+														CornerRadius="4">
+													<TextBlock Text="{Binding GenreName}"
+															   FontSize="20"
+															   Foreground="#333"/>
+												</Border>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+
+									<TextBlock Text="{Binding Description,
+                                                      Converter={StaticResource TruncateConverter}}"
+											   FontSize="20"
+											   TextWrapping="Wrap"/>
+
+								</StackPanel>
+							</Grid>
+					</Button>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</Grid>
+</UserControl>
